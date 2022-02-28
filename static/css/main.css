@@ -1,0 +1,13 @@
+body{
+    
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgb(149, 202, 204);
+}
+table, th, td {
+    border: 1px solid;
+  
+  }
+  .content
+  {
+      margin-left: 50%;
+  }
