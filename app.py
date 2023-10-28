@@ -1,10 +1,12 @@
+from threading import Thread
 from flask import Flask, render_template,request,redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from redisqueue import execute_redis_fn
+import os
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///'+os.getcwd()+'/test.db'
 db = SQLAlchemy(app)
-
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200),nullable=False)
@@ -21,6 +23,8 @@ def index():
         try:
             db.session.add(new_task)
             db.session.commit()
+            execute_redis_fn()
+            print("Task sent to redis queue")
             return redirect('/')
         except Exception as error:
             return "There is an issue"
@@ -58,4 +62,4 @@ def update(id):
     except Exception as error:
         return "There is an error"            
 if __name__ == "__main__":
-    app.run(debug=True)    
+    app.run(host='127.0.0.1', port=5002, debug=True)
