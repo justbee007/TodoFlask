@@ -17,6 +17,8 @@ class Todo(db.Model):
 
 @app.route('/',methods=['POST','GET'])
 def index():
+    secretkey = os.environ.get("SECRET_KEY")
+    print(secretkey)
     if request.method=='POST':
         task_content = request.form['content']
         new_task = Todo(content = task_content)
