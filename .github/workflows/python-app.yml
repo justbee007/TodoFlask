@@ -38,3 +38,14 @@ jobs:
       run: |
           pip install pytest pytest-cov
           pytest test.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.14
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "testingaflaskapp" # Must be unique in Heroku
+          heroku_email: "menon.abh@northeastern.edu"
